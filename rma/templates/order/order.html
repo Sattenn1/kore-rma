@@ -1,0 +1,496 @@
+{% extends "main/base.html" %} {% load static %} {% block content %}
+
+<div name="card" class="d-flex justify-content-center">
+  <div class="d-inline-flex bg-white mt-5" style="border-top-left-radius: 7px; border-bottom-left-radius: 7px; border-top-right-radius: 0; border-bottom-right-radius: 7px;">
+    <div class="d-flex p-4">
+      <div class="col me-5" style="width: 50rem">
+        <div class="row">
+          <div name="contacts" class="col" >
+            <h6 id="heading">Kontaktinė informacija</h6>
+            <hr class="mt-0 pt-0" />
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">First Name</label>
+              {{order.client_name}}
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Telefono numeris</label>
+              {{order.phone}}
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">El. paštas</label>
+              {{order.email}}
+            </div>
+          </div>
+          <div name="device info" class="col ms-4">
+            <h6 id="heading">Įrenginio informacija</h6>
+            <hr class="mt-0 pt-0" />
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Įrenginys</label>
+              {{order.device_type}}
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Modelis</label>
+              {{order.model}}
+            </div>
+            
+            {% if order.s_n %}
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">S/N</label>
+              {{order.s_n}}
+            </div>
+            {% else %}
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">S/N</label>
+              Neįvesta
+            </div>
+            {% endif %}
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Garantinis</label>
+              {{order.type}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div name="admission" class="col mt-4">
+            <h6 id="heading">Priėmimas</h6>
+            <hr class="mt-0 pt-0" />
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Priemė</label>
+              {{order.received_by.first_name}} {{order.received_by.last_name}}
+            </div>  
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Priėmimo data</label>
+              {{order.created_date | date:'Y-m-d'}}
+            </div>   
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Skubu</label>
+              {{order.priority}}
+            </div>         
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Gedimas</label>
+              {% if order.trouble %}
+              <div id="tabs" class="trouble-div" style="overflow-y: scroll; height: auto; max-height: 6rem;">{{order.trouble}}</div>
+              {% else %}
+              Neįvestas gedimo aprašymas!
+              {% endif %}  
+            </div>
+            <script>
+              $(document).ready(function() {
+              var div = $(".trouble-div");
+              var content = div.children("div");
+              var contentHeight = content.height();
+              var maxHeight = parseFloat(div.css("max-height"));
+              if (contentHeight > maxHeight) {
+                  div.css("overflow-y", "scroll");
+              }
+              });
+            </script>        
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Komentaras</label>
+              {% if order.comment %}
+              <div id="tabs" class="comment-div" style="overflow-y: scroll; height: auto; max-height: 6rem;">{{order.comment}}</div>
+              {% else %}
+              Komentarų nėra
+              {% endif %}
+            </div>
+            <script>
+              $(document).ready(function() {
+              var div = $(".comment-div");
+              var content = div.children("div");
+              var contentHeight = content.height();
+              var maxHeight = parseFloat(div.css("max-height"));
+              if (contentHeight > maxHeight) {
+                  div.css("overflow-y", "scroll");
+              }
+              });
+            </script>
+          </div>
+          <div name="return" class="col mt-4 ms-4">
+            <h6 id="heading">Grąžinimas klientui</h6>
+            <hr class="mt-0 pt-0" />
+            {% if order.closed_date %}
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Grąžinta klientui</label>
+              {{order.closed_date | date:'Y-m-d'}}
+            </div>  
+            {% endif %} 
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Suteikiama garantija</label>
+              {{order.in_type}}
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Suteikiama laikotarpiui</label>
+              {{order.period}}mėn
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <label class="text-lightgrey p-0 m-0" style="font-size: 10px;">Komentaras</label> 
+              {% if order.return_comment %}
+              <div id="tabs" class="return-div" style="overflow-y: scroll; height: auto; max-height: 6rem;">{{order.return_comment}}</div>
+              {% else %}
+              Komentarų nėra
+              {% endif %}
+            </div>
+            <script>
+              $(document).ready(function() {
+              var div = $(".return-div");
+              var content = div.children("div");
+              var contentHeight = content.height();
+              var maxHeight = parseFloat(div.css("max-height"));
+              if (contentHeight > maxHeight) {
+                  div.css("overflow-y", "scroll");
+              }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+      <div class="ms-2" name="default_questions" style="width: 20rem">
+        <h6 id="heading">Informacija apie įrenginį</h6>
+        <hr class="mt-0 pt-0" />
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label"
+            >Kompiuteris paliktas be įkrovėjo</label
+          >
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.charger == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.charger == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label">Suraižytas korpusas</label>
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.scratched == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.scratched == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label">Suraižytas ekranas</label>
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.scratched_screen == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.scratched_screen == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label">Įskilęs ekranas</label>
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.scracked == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.cracked == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label">Apipiltas</label>
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.splashed == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.splashed == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label class="col-form-label">Išlūžę vyriai</label>
+          <div class="d-flex">
+            <div class="d-flex me-5">
+            {% if order.hinges == "Taip" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Taip</p>
+            {% endif %}
+            </div>
+            <div class="d-flex">
+            {% if order.hinges == "Ne" %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple_check.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% else %}
+              <img
+              class="mt-1"
+              src="{% static 'images/Checkbox_purple.png' %}"
+              alt=""
+              width="17"
+              height="17"
+              style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+              />
+              <p>Ne</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div name="buttons" class="mt-5">
+    <div class="bg-white p-1" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 7px; border-bottom-right-radius: 7px;">
+      <a data-bs-toggle="modal"
+      data-bs-target="#update_order_card{{order.id}}"style="cursor: pointer;">
+       <img
+         class="m-2"
+         src="{% static 'images/Edit.png' %}"
+         alt=""
+         height="15"
+       />
+      </a>
+    </div>
+    <div class="bg-white p-1 my-1" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 7px; border-bottom-right-radius: 7px;">
+      <a href="{% url 'admission' order.id %}" target="_blank">
+        <img
+          class="m-2"
+          src="{% static 'images/Document.png' %}"
+          alt=""
+          height="15"
+        />
+      </a>
+    </div>
+    <div class="bg-white p-1" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 7px; border-bottom-right-radius: 7px;">
+      <a id="print" href="{% url 'admission_print' order.id %}" target="_blank" onclick="printAdmission();">
+        <img 
+        class="m-2" 
+        src="{% static 'images/Print.png' %}" 
+        alt="" 
+        height="15">
+      </a>
+    </div>
+  </div>
+  {% include 'order/update_order_card.html' %}
+</div>
+
+{% endblock content %}

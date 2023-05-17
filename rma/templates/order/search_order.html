@@ -1,0 +1,41 @@
+{% extends "main/base.html" %} {% load static %} {% block content %}
+<div class="p-3">
+  {% if orders %}
+  <div id="tabs" style="overflow-y: scroll; height: 85vh">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th style="text-align: start">Klientas</th>
+          <th style="text-align: start">Telefono numeris</th>
+          <th style="text-align: start">El. Paštas</th>
+          <th style="text-align: start">Įrenginys</th>
+          <th style="text-align: start">Modelis</th>
+          <th style="text-align: start">Gedimas</th>
+          <th style="text-align: start">Statusas</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for order in orders %}
+        <tr>
+          <td>
+            <a class="text-dark" href="{% url 'order' order.id %}">
+              {{order.client_name}}</a
+            >
+          </td>
+          <td>{{order.phone}}</td>
+          <td>{{order.email}}</td>
+          <td>{{order.device_type}}</td>
+          <td>{{order.model}}</td>
+          <td>{{order.trouble}}</td>
+          <td>{{order.status}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <h5>Rezultatų nerasta</h5>
+  {% endif %}
+</div>
+
+{% endblock content %}

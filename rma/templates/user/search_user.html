@@ -1,0 +1,46 @@
+{% extends "main/base.html" %} {% load static %} {% block content %}
+
+<div class="p-3">
+  {% if users %}
+  <div id="tabs" style="overflow-y: scroll; height: 85vh">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th style="text-align: start">Statusas</th>
+          <th style="text-align: start">Vartotojo vardas</th>
+          <th style="text-align: start">Vardas</th>
+          <th style="text-align: start">Pavardė</th>
+          <th style="text-align: start">El. paštas</th>
+          <th style="text-align: start">Grupės</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for user in users %}
+        <tr>
+          <td>{% if user.is_active %}Aktyvus{% else %}Neaktyvus{% endif %}</td>
+          <td>
+            <a class="text-dark" href="{% url 'user' user.id %}">
+              {{user.username}}</a
+            >
+          </td>
+          <td>{{user.first_name}}</td>
+          <td>{{user.last_name}}</td>
+          <td>{{user.email}}</td>
+          <td>{% if user.groups.all %}
+            {% for group in user.groups.all %}
+                {{ group.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            {% else %}
+                Nepriskirta
+            {% endif %}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <h5>Rezultatų nerasta</h5>
+  {% endif %}
+</div>
+
+{% endblock %}

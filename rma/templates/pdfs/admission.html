@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Priėmimo pažyma PDF</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main/main.css' %}" />
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"
+  ></script>
+</head>
+<body>
+  <div id="frame" class="d-flex justify-content-center">
+    <div id="tabs" class="admission p-3" style="overflow-y: scroll; height:100vh; width: 46rem;">
+        <div name="admission">
+            <div name="top" class="mb-2">
+              <div class="d-flex justify-content-between mb-2">
+                <p class="mb-0 pb-0" style="font-size: 12px;">Nr. {{order.code}}</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;">Data - {{order.created_date | date:'Y.m.d'}}</p>
+              </div>
+              <div class="d-flex justify-content-center">
+                <h4 class="display-6 mb-2" style="font-size: 20px;">Įrenginio priėmimo remontui pažyma</h4>
+              </div>
+            </div>
+            <div class="d-flex mb-1">
+            <div name="contacts" class="me-5">
+                <table class="table table-bordered" style="width: 25rem">
+                    <tr>
+                        <td class="m-0 p-1" style="width: 7rem; font-size: 10px; font-weight: 500;">Vardas Pavardė</td>
+                        <td class="m-0 p-1" style="font-size: 10px;">{{order.client_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="m-0 p-1" style="width: 7rem; font-size: 10px; font-weight: 500;">Telefono numeris</td>
+                        <td class="m-0 p-1" style="font-size: 10px;">{{order.phone}}</td>
+                    </tr>
+                    <tr>
+                        <td class="m-0 p-1" style="width: 7rem; font-size: 10px; font-weight: 500;">El. Paštas</td>
+                        <td class="m-0 p-1" style="font-size: 10px;">{{order.email}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div name="admission">
+                <p class="mb-1 pb-0" style="font-size: 10px;"><span style="font-weight: 500;">Priemė: </span>{{order.received_by.first_name}} {{order.received_by.last_name}}</p>
+                <p class="mb-1 pb-0" style="font-size: 10px;"><span style="font-weight: 500;">Įrenginys: </span>{{order.device_type}}</p>               
+                {% if order.s_n %}
+                  <p class="mb-0 pb-0" style="font-size: 10px;"><span style="font-weight: 500;">S/N:  </span>{{order.s_n}}</p>
+                {% else %}
+                  <p class="mb-0 pb-0" style="font-size: 10px;"><span style="font-weight: 500;">S/N:  </span></p>
+                {% endif %}
+                <div name="warranty" class="d-flex" style="margin-top: 0.2rem;">
+                    <div class="d-flex me-5">
+                    {% if order.type == "Taip" %}
+                      <img
+                      class="mt-1"
+                      src="{% static 'images/Checkbox_purple_check.png' %}"
+                      alt=""
+                      width="10"
+                      height="10"
+                      style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                      />
+                      <p style="font-size: 10px;">Garantinis</p>
+                    {% else %}
+                      <img
+                      class="mt-1"
+                      src="{% static 'images/Checkbox_purple.png' %}"
+                      alt=""
+                      width="10"
+                      height="10"
+                      style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                      />
+                      <p style="font-size: 10px;">Garantinis</p>
+                    {% endif %}
+                    </div>
+                    <div class="d-flex">
+                    {% if order.type == "Ne" %}
+                      <img
+                      class="mt-1"
+                      src="{% static 'images/Checkbox_purple_check.png' %}"
+                      alt=""
+                      width="10"
+                      height="10"
+                      style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                      />
+                      <p style="font-size: 10px;">Negarantinis</p>
+                    {% else %}
+                      <img
+                      class="mt-1"
+                      src="{% static 'images/Checkbox_purple.png' %}"
+                      alt=""
+                      width="10"
+                      height="10"
+                      style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                      />
+                      <p style="font-size: 10px;">Negarantinis</p>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div name="trouble" class="mb-3">
+            <div class="card">
+                <div class="card-header p-1 ps-2" style="font-size: 10px; font-weight: 500;">
+                  Gedimas
+                </div>
+                <div class="card-body p-2" style="font-size: 10px;">
+                    {{order.trouble}}
+                </div>
+            </div>
+            </div>
+            <div name="default_questions">
+            <div class="card">
+                <div class="card-header p-1 ps-2" style="font-size: 10px; font-weight: 500;">
+                  Preliminarios apžiūros metu nustatyti įrenginio ar jo dalių pažeidimai
+                </div>
+                <div class="card-body p-2 pt-0" style="font-size: 10px;">
+                    <div class="d-flex">
+                        <div class="me-4">
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0"
+                                  >Palikta be įkrovėjo</label
+                                >
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.charger == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.charger == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0">Suraižytas korpusas</label>
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.scratched == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.scratched == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-4 me-4">
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0">Suraižytas ekranas</label>
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.scratched_screen == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.scratched_screen == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0">Įskilęs ekranas</label>
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.scracked == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.cracked == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-4">
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0">Apipiltas</label>
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.splashed == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.splashed == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column mb-0">
+                                <label class="col-form-label mb-0 pb-0">Išlūžę vyriai</label>
+                                <div class="d-flex">
+                                  <div class="d-flex me-5">
+                                  {% if order.hinges == "Taip" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Taip</p>
+                                  {% endif %}
+                                  </div>
+                                  <div class="d-flex">
+                                  {% if order.hinges == "Ne" %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple_check.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% else %}
+                                    <img
+                                    class="mt-1"
+                                    src="{% static 'images/Checkbox_purple.png' %}"
+                                    alt=""
+                                    width="10"
+                                    height="10"
+                                    style="padding-bottom: 0.1rem; margin-right: 0.5rem;"
+                                    />
+                                    <p class="m-0 p-0" style="font-size: 10px;">Ne</p>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div name="info" class="mt-3">
+            <p class="mb-0 pb-0" style="font-size: 9px;">
+                Priimdama remontui kompiuterinę įrangą, KORE <span style="font-weight: 700;">neatsako</span> už kompiuterio informacijos kaupikliuose esančios <span style="font-weight: 700;">informacijos išsaugojimą ir programinės įrangos bei duomenų legalumą!</span>
+            </p>
+            <p class="mb-0 mb-0" style="font-size: 9px; font-weight: 700;">Garantinės priežiūros taisyklės:</p>
+            <ol style="padding-left: 1rem;">
+                <li style="font-size: 9px;">Įrenginio pasas lieka pas Pardavėją visą įrenginio ar jo komponento remonto laikotarpį.</li>
+                <li style="font-size: 9px;">Gedimų nustatymui Pardavėjas gali reikalauti įrenginį palikti jo patalpose.</li>
+                <li style="font-size: 9px;">Jei gedimų nerasta arba esantis gedimas atsiradęs dėl Pirkėjo kaltės, išlaidas, susijusias su gedimų paieška dengia Pirkėjas.</li>
+                <li style="font-size: 9px;">Jei kompiuterinis įrenginys ar kuris nors jo komponentas tinkamas garantiniam remontui, jis Pardavėjo <span style="font-weight: 700;">siunčiamas</span> Tiekėjui
+                    (Gamintojui). Pirkėjui įrenginys (įrenginio komponentas) grąžinamas suremontuotas ar pakeistas analogišku tik tada, kai jis <span style="font-weight: 700;">grįžta</span> iš Tiekėjo (Gamintojo). Įrenginio remontas – keitimas gali trukti <span style="font-weight: 700;">1-4 savaites. Išskirtiniais atvejais (nutraukta įrenginio
+                        gamyba, įrenginį reikia atvežti iš kitos šalies ir t.t.) gali užtrukti ir ilgiau.</span></li>
+                <li style="font-size: 9px;">Įrenginys saugomas 180 dienų. Neatsiėmus įrenginio per šį terminą, vėliau jis negrąžinamas.</li>
+            </ol>
+            </div>
+            <div name="signatures">
+            <p style="font-size: 10px;">Pateikiamo įrenginio komplektaciją ir aukščiau pateiktos informacijos teisingumą tvirtinu. Sutinku, kad sugedęs įrenginys ar jo komponentas būtų remontuojamas
+                arba keičiamas analogišku.</p>
+            <div class="d-flex justify-content-between">
+                <p style="font-size: 10px; font-weight: 700;">Su remonto sąlygomis susipažinau ir sutinku.</p>
+                <div class="d-flex flex-column">
+                    <p class="m-0 p-0 ps-2 border-bottom border-dark" style="font-size: 10px; width: 15rem;">{{order.client_name}}</p>
+                    <p class="m-0 p-0" style="font-size: 7px; text-align: center;">(vardas, pavardė, parašas)</p>
+                </div>
+            </div>
+            </div>
+        </div>
+        <hr>
+        <div name="return">
+          <div name="top" class="mb-2">
+            <div class="d-flex justify-content-between mb-2">
+              <div class="d-flex flex-column">
+                <h4 class="display-6 mb-3" style="font-size: 20px;">Įrenginio atsiėmimo iš remonto pažyma</h4>
+                <p class="mb-0 pb-0" style="font-size: 12px;"><span style="font-weight: 500;">RMA -</span> {{order.code}}</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;"><span style="font-weight: 500;">Priemė -</span> {{order.received_by.first_name}} {{order.received_by.last_name}}</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;"><span style="font-weight: 500;">Įrenginys, komponentas:</span> {{order.device_type}}</p>
+                <div name="info" class="mt-3">
+                  <p class="mb-0 pb-0" style="font-size: 9px;">
+                      Priimdama remontui kompiuterinę įrangą, KORE <span style="font-weight: 700;">neatsako</span> už kompiuterio informacijos kaupikliuose esančios <span style="font-weight: 700;">informacijos išsaugojimą ir programinės įrangos bei duomenų legalumą!</span>
+                  </p>
+                  <p class="mb-0 mb-0" style="font-size: 9px; font-weight: 700;">Garantinės priežiūros taisyklės:</p>
+                  <ol style="padding-left: 1rem;">
+                      <li style="font-size: 9px;">Įrenginio pasas lieka pas Pardavėją visą įrenginio ar jo komponento remonto laikotarpį.</li>
+                      <li style="font-size: 9px;">Gedimų nustatymui Pardavėjas gali reikalauti įrenginį palikti jo patalpose.</li>
+                      <li style="font-size: 9px;">Jei gedimų nerasta arba esantis gedimas atsiradęs dėl Pirkėjo kaltės, išlaidas, susijusias su gedimų paieška dengia Pirkėjas.</li>
+                      <li style="font-size: 9px;">Jei kompiuterinis įrenginys ar kuris nors jo komponentas tinkamas garantiniam remontui, jis Pardavėjo <span style="font-weight: 700;">siunčiamas</span> Tiekėjui
+                          (Gamintojui). Pirkėjui įrenginys (įrenginio komponentas) grąžinamas suremontuotas ar pakeistas analogišku tik tada, kai jis <span style="font-weight: 700;">grįžta</span> iš Tiekėjo (Gamintojo). Įrenginio remontas – keitimas gali trukti <span style="font-weight: 700;">1-4 savaites. Išskirtiniais atvejais (nutraukta įrenginio
+                              gamyba, įrenginį reikia atvežti iš kitos šalies ir t.t.) gali užtrukti ir ilgiau.</span></li>
+                      <li style="font-size: 9px;">Įrenginys saugomas 180 dienų. Neatsiėmus įrenginio per šį terminą, vėliau jis negrąžinamas.</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="d-flex flex-column ms-3">
+                <img src="{% static 'logo/kore_logo_melynas.png' %}" alt="" height="40px">
+                <p class="mb-2 pb-0 mt-2" style="font-size: 12px;"><span class="me-3" style="font-weight: 500;">Data:</span> {{order.created_date | date:'Y.m.d'}}</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;">Panevėžys, Beržų g. 35</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;">Tel.: 8 638 07030</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;">info@kore.lt</p>
+                <p class="mb-0 pb-0" style="font-size: 12px;">kore.lt</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>  
+</body>
+</html>
