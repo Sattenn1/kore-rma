@@ -1,0 +1,36 @@
+#heading {
+  font-family: "Comfortaa", cursive;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: #eff1f2;
+  position: fixed;
+}
+
+#tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#tabs {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.form-check-input:checked:focus {
+  box-shadow: none;
+  outline: none;
+  border: 0;
+}
+
+.form-check-input:checked {
+  background-color: #333645 !important; /* Change to the desired color */
+  outline: none;
+  border: 0;
+}
