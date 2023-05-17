@@ -47,7 +47,7 @@ class Order(models.Model):
     comment = models.CharField(max_length=500, null=True, blank=True)
 
     received_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    type = models.CharField(max_length=100, choices=type, null=True, blank=True)
+    type = models.CharField(max_length=100, choices=types, null=True, blank=True)
     priority = models.CharField(max_length=100, choices=priority, null=True, blank=True)
     status = models.CharField(max_length=100, default="Užregistruotas gedimas", choices=status, null=True, blank=True)
 
