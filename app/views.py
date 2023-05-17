@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.db.models import Q
 from .forms import *
+from app.models import Order
+from django.db.models import Max
 
 
 def user_login(request):
@@ -71,6 +73,7 @@ def admission_print(request, order_id):
 def add_order(request):
     current_user = request.user
     user = request.user
+
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -79,21 +82,18 @@ def add_order(request):
             pk = order.id
             order = Order.objects.get(pk=pk)
             order.received_by = user
-            last_obj = Order.objects.order_by('-code').first()
-            if last_obj:
-                order.code = last_obj.code + 1
+            last_code = Order.objects.aggregate(Max('code')).get('code__max')
+            if last_code is not None:
+                order.code = last_code + 1
             else:
                 order.code = 22430
             order.save()
             return redirect("order", pk)
-        
     else:
         form = OrderForm()
-        return render(request, "order/add_order.html", {"form" : form,
-                                                        "current_user" : current_user})
 
-    return render(request, "order/add_order.html", {"form" : form,
-                                                    "current_user" : current_user})
+    return render(request, "order/add_order.html", {"form": form, "current_user": current_user})
+
 
 @login_required
 def add_user(request):
