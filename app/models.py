@@ -47,6 +47,7 @@ class Order(models.Model):
     comment = models.CharField(max_length=500, null=True, blank=True)
 
     received_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    type = models.CharField(max_length=100, choices=type, null=True, blank=True)
     priority = models.CharField(max_length=100, choices=priority, null=True, blank=True)
     status = models.CharField(max_length=100, default="Užregistruotas gedimas", choices=status, null=True, blank=True)
 
@@ -60,7 +61,7 @@ class Order(models.Model):
 
     created_date = models.DateField(default=date.today, null=True, blank=True)
     closed_date = models.DateField(null=True, blank=True)
-    in_type = models.CharField(max_length=100, choices=in_type, null=True, blank=True)
+    in_type = models.CharField(max_length=100, default="Ne", choices=in_type, null=True, blank=True)
     period = models.IntegerField(null=True, blank=True, default="0")
     return_comment = models.CharField(max_length=500, null=True, blank=True)
 
