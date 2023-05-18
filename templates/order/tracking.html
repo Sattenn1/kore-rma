@@ -20,73 +20,64 @@
     ></script>
   </head>
 
-  <body style="background-color: #292b37;">
+  <body style="background-color: #292b37">
     <div class="d-flex justify-content-center mb-5 mt-5">
-        <img src="{% static 'logo/kore_baltas.png'%}" alt="" height='50px'>
+      <img src="{% static 'logo/kore_baltas.png'%}" alt="" height="50px" />
     </div>
-    <form
-        id="quicksearch"
-        name="quicksearch"
-        role="search"
-        method="POST"
-        action="{% url 'tracking' %}"
-        >
-        <div class="input-group d-flex justify-content-center">
-          <div class="flex-column">
-            <input
-              id="searchfield"
-              class="form-control"
-              name="search"
-              type="search"
-              placeholder="Įveskite RMA kodą"
-              aria-label="Search"
-              style="border-radius: 4px 0 0 4px;"
-            />
-          </div>
-          <div>
-            <button id="searchbtn" class="btn btn-secondary" type="submit" style="border-radius: 0 0.25rem 0.25rem 0;">
-              Ieškoti
-            </button>
-          </div>
+    <form id="quicksearch" name="quicksearch" role="search" method="POST" action="{% url 'tracking' %}">
+      <div class="input-group d-flex justify-content-center">
+        <div class="flex-column">
+          <input
+            id="searchfield"
+            class="form-control"
+            name="search"
+            type="search"
+            placeholder="Įveskite RMA kodą"
+            aria-label="Search"
+            style="border-radius: 4px 0 0 4px"
+          />
         </div>
-        {% csrf_token %}
-    </form>
-    <div name="errors" class="d-flex justify-content-center mt-3">
-        {% if messages %}
-        <div class="text-white">
-            {{ messages }}
-        </div>
-        {% endif %}
-    </div>
-    <div name="order" class="d-flex justify-content-center mt-3">
-        {% if order %}
-        <h5 class="text-white">Statusas: <span style="font-weight: 200;">{{order.status}}</span></h5>
-        {% endif %}
-     </div>
-     
-     {% if order.status == "Pataisyta"%}
-     <div class="d-flex justify-content-center ms-3 text-white">
-        <div class="d-flex flex-column align-items-center mt-3">
-            <h6>Kviečiame atvykti atsiimti įrenginį jums patogiu metu</h6>
-            <h6 class="mb-2">Adresu Panevėžys, Beržų g. 35</h6>
-            <table>
-                <tr>
-                    <td>I-V</td>
-                    <td>9:00-19:00</td>
-                </tr>
-                <tr>
-                    <td>VI</td>
-                    <td>9:00-13:00</td>
-                </tr>
-                <tr>
-                    <td>VII</td>
-                    <td>Nedirbame</td>
-                </tr>
-            </table>
-            <p class="mb-0 pb-0">Tel.: 8 638 07030</p>
+        <div>
+          <button id="searchbtn" class="btn btn-secondary" type="submit" style="border-radius: 0 0.25rem 0.25rem 0">
+            Ieškoti
+          </button>
         </div>
       </div>
-     {% endif %}
-          
+      {% csrf_token %}
+    </form>
+    <div name="errors" class="d-flex justify-content-center mt-3">
+      {% if messages %}
+      <div class="text-white">{{ messages }}</div>
+      {% endif %}
+    </div>
+    <div name="order" class="d-flex justify-content-center mt-3">
+      {% if order %}
+      <h5 class="text-white">Statusas: <span style="font-weight: 200">{{order.status}}</span></h5>
+      {% endif %}
+    </div>
+
+    {% if order.status == "Pataisyta"%}
+    <div class="d-flex justify-content-center ms-3 text-white">
+      <div class="d-flex flex-column align-items-center mt-3">
+        <h6 style="text-align: center">Kviečiame atvykti atsiimti įrenginį jums patogiu metu</h6>
+        <h6 class="mb-2">Adresu Panevėžys, Beržų g. 35</h6>
+        <table>
+          <tr>
+            <td>I-V</td>
+            <td>9:00-19:00</td>
+          </tr>
+          <tr>
+            <td>VI</td>
+            <td>9:00-13:00</td>
+          </tr>
+          <tr>
+            <td>VII</td>
+            <td>Nedirbame</td>
+          </tr>
+        </table>
+        <p class="mb-0 pb-0">Tel.: 8 638 07030</p>
+      </div>
+    </div>
+    {% endif %}
   </body>
 </html>
