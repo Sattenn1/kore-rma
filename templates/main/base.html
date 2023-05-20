@@ -22,26 +22,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Righteous&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap" rel="stylesheet" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="
       https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js
       "></script>
-
   </head>
   <body class="bg-bgrey">
-    <nav
-      name="navigation"
-      class="navbar bg-dark navbar-expand-lg bg-body-tertiary"
-      data-bs-theme="dark"
-    >
+    <nav name="navigation" class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
           <img
@@ -65,31 +59,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_order'%}"
-                >Pridėti užsakymą</a
-              >
+              <a class="nav-link" href="{% url 'add_order'%}">Pridėti užsakymą</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_user'%}"
-                >Pridėti naudotoją</a
-              >
+              <a class="nav-link" href="{% url 'add_user'%}">Pridėti naudotoją</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/admin">Adminas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'user_logout'%}"
-                >Atsijungti</a
-              >
+              <a class="nav-link" href="{% url 'user_logout'%}">Atsijungti</a>
             </li>
           </ul>
-          <form
-            id="quicksearch"
-            name="quicksearch"
-            role="search"
-            method="POST"
-            action="{% url 'search_order' %}"
-          >
+          <form id="quicksearch" name="quicksearch" role="search" method="POST" action="{% url 'search_order' %}">
             <div class="input-group d-flex justify-content-end">
               <div class="flex-column">
                 <input
@@ -99,21 +81,22 @@
                   type="search"
                   placeholder=""
                   aria-label="Search"
-                  style="border-radius: 4px 0 0 4px;"
+                  style="border-radius: 4px 0 0 4px"
                 />
               </div>
               <div class="flex-column">
-                <select
-                  id="selection"
-                  class="form-select rounded-0"
-                  onchange="chngAction(this.id)"
-                >
+                <select id="selection" class="form-select rounded-0" onchange="chngAction(this.id)">
                   <option value="Užsakymas">Užsakymas</option>
                   <option value="Naudotojas">Naudotojas</option>
                 </select>
               </div>
               <div>
-                <button id="searchbtn" class="btn btn-secondary" type="submit" style="border-radius: 0 0.25rem 0.25rem 0;">
+                <button
+                  id="searchbtn"
+                  class="btn btn-secondary"
+                  type="submit"
+                  style="border-radius: 0 0.25rem 0.25rem 0"
+                >
                   Ieškoti
                 </button>
               </div>
@@ -123,7 +106,7 @@
           <script>
             function chngAction(id) {
               var option = document.getElementById(id).value;
-                        
+
               if (option == "Užsakymas") {
                 document.getElementById("quicksearch").action = "/ieskoti_uzsakymo";
               } else if (option == "Naudotojas") {
@@ -132,7 +115,7 @@
             }
           </script>
           <a href="{% url 'user' current_user.id %}" class="ms-3">
-            <img src="{% static 'images/profile.png'  %}" alt="" height="35px">
+            <img src="{% static 'images/profile.png'  %}" alt="" height="35px" />
           </a>
         </div>
       </div>
@@ -141,181 +124,127 @@
     <div class="d-flex justify-content-between p-3">
       <div name="received">
         <div class="d-flex" style="width: 22rem">
-          <img
-            src="{% static 'images/Bullet_grey.png'  %}"
-            alt=""
-            width="17"
-            height="17"
-            style="margin-top: 0.5rem"
-          />
+          <img src="{% static 'images/Bullet_grey.png'  %}" alt="" width="17" height="17" style="margin-top: 0.5rem" />
           <h4 class="ms-2">Užregistruota</h4>
         </div>
         <div id="tabs" style="height: 52rem; overflow-y: scroll">
-          {% for order in orders %} 
-            {% if order.status == "Užregistruotas gedimas" %}
-            <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item p-2" style="width: 22rem">
-                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
-                  <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
-                    <a style="text-decoration: none; color: black;" href="{% url 'order' order.id %}">{{order.code}} | {{order.client_name}}</a>
-                  </h6>
-                  <div class="d-flex align-items-center">
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="modal"
-                       data-bs-target="#update_order{{order.id}}"style="cursor: pointer;">
-                      <img
-                        class="me-2 mt-0"
-                        src="{% static 'images/Edit.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="collapse"
-                       data-bs-target="#accordion{{order.id}}"
-                       aria-expanded="false"
-                       aria-controls="accordion{{order.id}}" style="cursor: pointer;">
-                      <img
-                        class="me-1 mt-0"
-                        src="{% static 'images/Details.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                  </div>
-                  {% include 'order/update_order.html' %}
-                </div>
-                <h6
-                id="tabs"
-                class="text-body-secondary mb-2"
-                style="overflow-x: scroll; font-size: 13px;"
-              >
-                {{order.device_type}} {% if order.model %} - {{order.model}}
-                {%endif%}
+          {% for order in orders %} {% if order.status == "Užregistruotas gedimas" %}
+          <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item p-2" style="width: 22rem">
+              <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
+                <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
+                  <a style="text-decoration: none; color: black" href="{% url 'order' order.id %}"
+                    >{{order.code}} | {{order.client_name}}</a
+                  >
                 </h6>
-                <h6 class="text-body-secondary" style="font-size: 13px;">{{order.phone}}</h6>
-                <div
-                  id="accordion{{order.id}}"
-                  class="accordion-collapse collapse"
-                >
+                <div class="d-flex align-items-center">
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update_order{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-2 mt-0" src="{% static 'images/Edit.png' %}" alt="" height="11" />
+                  </a>
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion{{order.id}}"
+                    aria-expanded="false"
+                    aria-controls="accordion{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-1 mt-0" src="{% static 'images/Details.png' %}" alt="" height="11" />
+                  </a>
+                </div>
+                {% include 'order/update_order.html' %}
+              </div>
+              <h6 id="tabs" class="text-body-secondary mb-2" style="overflow-x: scroll; font-size: 13px">
+                {{order.device_type}} {% if order.model %} - {{order.model}} {%endif%}
+              </h6>
+              <h6 class="text-body-secondary" style="font-size: 13px">{{order.phone}}</h6>
+              <div id="accordion{{order.id}}" class="accordion-collapse collapse">
                 <div class="accordion-body p-0" style="width: 21rem">
-                  <hr class="p-0 m-0 mb-1">
+                  <hr class="p-0 m-0 mb-1" />
                   <div name="contents">
                     {% if order.trouble %}
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Gedimas:</p>
-                    <p
-                      class="mb-1"
-                      id="tabs"
-                      style="font-size: 13px;"
-                    >
-                      {{order.trouble}}
-                    </p>
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Gedimas:</p>
+                    <p class="mb-1" id="tabs" style="font-size: 13px">{{order.trouble}}</p>
                     {% endif %} {% if order.comment %}
-                    <hr class="p-0 m-0 mb-1">
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Pastabos:</p>
-                    <p
-                      id="tabs"
-                      class="card-text mb-2"
-                      style="font-size: 13px;"
-                    >
-                      {{order.comment}}
-                    </p>
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Pastabos:</p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.comment}}</p>
                     {% endif %}
                   </div>
                 </div>
-                </div>
               </div>
             </div>
-            {% endif %} 
-          {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
         </div>
       </div>
       <div name="priority">
         <div class="d-flex" style="width: 22rem">
-          <img
-            src="{% static 'images/Bullet_red.png'  %}"
-            alt=""
-            width="17"
-            height="17"
-            style="margin-top: 0.5rem"
-          />
+          <img src="{% static 'images/Bullet_red.png'  %}" alt="" width="17" height="17" style="margin-top: 0.5rem" />
           <h4 class="ms-2">Skubu</h4>
         </div>
         <div id="tabs" style="height: 52rem; overflow-y: scroll">
           {% for order in orders %} 
-            {% if order.status != "Pataisyta" and order.status != "Atiduota klientui" %}
-              {% if order.priority == "Taip" %}
-                <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
-                  <div class="accordion-item p-2" style="width: 22rem">
-                    <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
-                      <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
-                        <a style="text-decoration: none; color: black;" href="{% url 'order' order.id %}">{{order.code}} | {{order.client_name}}</a>
-                      </h6>
-                      <div class="d-flex">
-                        <a class="d-flex justify-content-center pb-1" data-bs-toggle="modal"
-                           data-bs-target="#update_order{{order.id}}"style="cursor: pointer;">
-                          <img
-                            class="me-2 mt-0"
-                            src="{% static 'images/Edit.png' %}"
-                            alt=""
-                            height="11"
-                          />
-                        </a>
-                        <a class="d-flex justify-content-center pb-1" data-bs-toggle="collapse"
-                           data-bs-target="#accordion{{order.id}}"
-                           aria-expanded="false"
-                           aria-controls="accordion{{order.id}}" style="cursor: pointer;">
-                          <img
-                            class="me-1 mt-0"
-                            src="{% static 'images/Details.png' %}"
-                            alt=""
-                            height="11"
-                          />
-                        </a>
-                      </div>
-                      {% include 'order/update_order.html' %}
-                    </div>
-                    <h6
-                    id="tabs"
-                    class="text-body-secondary mb-2"
-                    style="overflow-x: scroll; font-size: 13px;"
+          {% if order.status != "Pataisyta" and order.status != "Atiduota klientui" %} 
+          {% if order.priority == "Taip" %}
+          <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item p-2" style="width: 22rem">
+              <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
+                <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
+                  <a style="text-decoration: none; color: black" href="{% url 'order' order.id %}"
+                    >{{order.code}} | {{order.client_name}}</a
                   >
-                    {{order.device_type}} {% if order.model %} - {{order.model}}
-                    {%endif%}
-                    </h6>
-                    <h6 class="text-body-secondary" style="font-size: 13px;">{{order.phone}}</h6>
-                    <div
-                      id="accordion{{order.id}}"
-                      class="accordion-collapse collapse"
-                    >
-                    <div class="accordion-body p-0" style="width: 21rem">
-                      <hr class="p-0 m-0 mb-1">
-                      <div name="contents">
-                        {% if order.trouble %}
-                        <p class="mb-0" style="font-weight: 500; font-size: 13px;">Gedimas:</p>
-                        <p
-                          class="mb-1"
-                          id="tabs"
-                          style="font-size: 13px;"
-                        >
-                          {{order.trouble}}
-                        </p>
-                        {% endif %} {% if order.comment %}
-                        <hr class="p-0 m-0 mb-1">
-                        <p class="mb-0" style="font-weight: 500; font-size: 13px;">Pastabos:</p>
-                        <p
-                          id="tabs"
-                          class="card-text mb-2"
-                          style="font-size: 13px;"
-                        >
-                          {{order.comment}}
-                        </p>
-                        {% endif %}
-                      </div>
-                    </div>
-                    </div>
+                </h6>
+                <div class="d-flex">
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update_order{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-2 mt-0" src="{% static 'images/Edit.png' %}" alt="" height="11" />
+                  </a>
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion{{order.id}}"
+                    aria-expanded="false"
+                    aria-controls="accordion{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-1 mt-0" src="{% static 'images/Details.png' %}" alt="" height="11" />
+                  </a>
+                </div>
+                {% include 'order/update_order.html' %}
+              </div>
+              <h6 id="tabs" class="text-body-secondary mb-2" style="overflow-x: scroll; font-size: 13px">
+                {{order.device_type}} {% if order.model %} - {{order.model}} {%endif%}
+              </h6>
+              <h6 class="text-body-secondary" style="font-size: 13px">{{order.phone}}</h6>
+              <div id="accordion{{order.id}}" class="accordion-collapse collapse">
+                <div class="accordion-body p-0" style="width: 21rem">
+                  <hr class="p-0 m-0 mb-1" />
+                  <div name="contents">
+                    {% if order.trouble %}
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Gedimas:</p>
+                    <p class="mb-1" id="tabs" style="font-size: 13px">{{order.trouble}}</p>
+                    {% endif %} {% if order.comment %}
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Pastabos:</p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.comment}}</p>
+                    {% endif %}
                   </div>
                 </div>
-              {% endif %}  
-            {% endif %} 
+              </div>
+            </div>
+          </div>
+          {% endif %} 
+          {% endif %} 
           {% endfor %}
         </div>
       </div>
@@ -331,296 +260,206 @@
           <h4 class="ms-2">Taisoma</h4>
         </div>
         <div id="tabs" style="height: 52rem; overflow-y: scroll">
-          {% for order in orders %} 
-            {% if order.status == "Taisoma" %}
-            <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item p-2" style="width: 22rem">
-                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
-                  <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
-                    <a style="text-decoration: none; color: black;" href="{% url 'order' order.id %}">{{order.code}} | {{order.client_name}}</a>
-                  </h6>
-                  <div class="d-flex">
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="modal"
-                       data-bs-target="#update_order{{order.id}}"style="cursor: pointer;">
-                      <img
-                        class="me-2 mt-0"
-                        src="{% static 'images/Edit.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="collapse"
-                       data-bs-target="#accordion{{order.id}}"
-                       aria-expanded="false"
-                       aria-controls="accordion{{order.id}}" style="cursor: pointer;">
-                      <img
-                        class="me-1 mt-0"
-                        src="{% static 'images/Details.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                  </div>
-                  {% include 'order/update_order.html' %}
-                </div>
-                <h6
-                id="tabs"
-                class="text-body-secondary mb-2"
-                style="overflow-x: scroll; font-size: 13px;"
-              >
-                {{order.device_type}} {% if order.model %} - {{order.model}}
-                {%endif%}
+          {% for order in orders %} {% if order.status == "Taisoma" or order.status == "Laukiama dalių" %}
+          <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item p-2" style="width: 22rem">
+              <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
+                <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
+                  <a style="text-decoration: none; color: black" href="{% url 'order' order.id %}"
+                    >{{order.code}} | {{order.client_name}}</a
+                  >
                 </h6>
-                <h6 class="text-body-secondary" style="font-size: 13px;">{{order.phone}}</h6>
-                <div
-                  id="accordion{{order.id}}"
-                  class="accordion-collapse collapse"
-                >
+                <div class="d-flex">
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update_order{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-2 mt-0" src="{% static 'images/Edit.png' %}" alt="" height="11" />
+                  </a>
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion{{order.id}}"
+                    aria-expanded="false"
+                    aria-controls="accordion{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-1 mt-0" src="{% static 'images/Details.png' %}" alt="" height="11" />
+                  </a>
+                </div>
+                {% include 'order/update_order.html' %}
+              </div>
+              <h6 id="tabs" class="text-body-secondary mb-2" style="overflow-x: scroll; font-size: 13px">
+                {{order.device_type}} {% if order.model %} - {{order.model}} {%endif%}
+              </h6>
+              <h6 class="text-body-secondary" style="font-size: 13px">{{order.phone}}</h6>
+              <div id="accordion{{order.id}}" class="accordion-collapse collapse">
                 <div class="accordion-body p-0" style="width: 21rem">
-                  <hr class="p-0 m-0 mb-1">
+                  <hr class="p-0 m-0 mb-1" />
                   <div name="contents">
                     {% if order.trouble %}
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Gedimas:</p>
-                    <p
-                      class="mb-1"
-                      id="tabs"
-                      style="font-size: 13px;"
-                    >
-                      {{order.trouble}}
-                    </p>
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Gedimas:</p>
+                    <p class="mb-1" id="tabs" style="font-size: 13px">{{order.trouble}}</p>
                     {% endif %} {% if order.comment %}
-                    <hr class="p-0 m-0 mb-1">
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Pastabos:</p>
-                    <p
-                      id="tabs"
-                      class="card-text mb-2"
-                      style="font-size: 13px;"
-                    >
-                      {{order.comment}}
-                    </p>
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Pastabos:</p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.comment}}</p>
                     {% endif %}
                   </div>
                 </div>
-                </div>
               </div>
             </div>
-            {% endif %} 
-          {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
         </div>
       </div>
       <div name="repaired">
         <div class="d-flex" style="width: 22rem">
-          <img
-            src="{% static 'images/Bullet_blue.png'  %}"
-            alt=""
-            width="17"
-            height="17"
-            style="margin-top: 0.5rem"
-          />
+          <img src="{% static 'images/Bullet_blue.png'  %}" alt="" width="17" height="17" style="margin-top: 0.5rem" />
           <h4 class="ms-2">Pataisyta</h4>
         </div>
         <div id="tabs" style="height: 52rem; overflow-y: scroll">
-          {% for order in orders %} 
-            {% if order.status == "Pataisyta" %}
-            <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item p-2" style="width: 22rem">
-                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
-                  <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
-                    <a style="text-decoration: none; color: black;" href="{% url 'order' order.id %}">{{order.code}} | {{order.client_name}}</a>
-                  </h6>
-                  <div class="d-flex">
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="modal"
-                       data-bs-target="#update_order{{order.id}}"style="cursor: pointer;">
-                      <img
-                        class="me-2 mt-0"
-                        src="{% static 'images/Edit.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="collapse"
-                       data-bs-target="#accordion{{order.id}}"
-                       aria-expanded="false"
-                       aria-controls="accordion{{order.id}}" style="cursor: pointer;">
-                      <img
-                        class="me-1 mt-0"
-                        src="{% static 'images/Details.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                  </div>
-                  {% include 'order/update_order.html' %}
-                </div>
-                <h6
-                id="tabs"
-                class="text-body-secondary mb-2"
-                style="overflow-x: scroll; font-size: 13px;"
-              >
-                {{order.device_type}} {% if order.model %} - {{order.model}}
-                {%endif%}
+          {% for order in orders %} {% if order.status == "Pataisyta" %}
+          <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item p-2" style="width: 22rem">
+              <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
+                <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
+                  <a style="text-decoration: none; color: black" href="{% url 'order' order.id %}"
+                    >{{order.code}} | {{order.client_name}}</a
+                  >
                 </h6>
-                <h6 class="text-body-secondary" style="font-size: 13px;">{{order.phone}}</h6>
-                <div
-                  id="accordion{{order.id}}"
-                  class="accordion-collapse collapse"
-                >
+                <div class="d-flex">
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update_order{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-2 mt-0" src="{% static 'images/Edit.png' %}" alt="" height="11" />
+                  </a>
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion{{order.id}}"
+                    aria-expanded="false"
+                    aria-controls="accordion{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-1 mt-0" src="{% static 'images/Details.png' %}" alt="" height="11" />
+                  </a>
+                </div>
+                {% include 'order/update_order.html' %}
+              </div>
+              <h6 id="tabs" class="text-body-secondary mb-2" style="overflow-x: scroll; font-size: 13px">
+                {{order.device_type}} {% if order.model %} - {{order.model}} {%endif%}
+              </h6>
+              <h6 class="text-body-secondary" style="font-size: 13px">{{order.phone}}</h6>
+              <div id="accordion{{order.id}}" class="accordion-collapse collapse">
                 <div class="accordion-body p-0" style="width: 21rem">
-                  <hr class="p-0 m-0 mb-1">
+                  <hr class="p-0 m-0 mb-1" />
                   <div name="contents">
                     {% if order.trouble %}
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Gedimas:</p>
-                    <p
-                      class="mb-1"
-                      id="tabs"
-                      style="font-size: 13px;"
-                    >
-                      {{order.trouble}}
-                    </p>
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Gedimas:</p>
+                    <p class="mb-1" id="tabs" style="font-size: 13px">{{order.trouble}}</p>
                     {% endif %} {% if order.comment %}
-                    <hr class="p-0 m-0 mb-1">
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Pastabos:</p>
-                    <p
-                      id="tabs"
-                      class="card-text mb-2"
-                      style="font-size: 13px;"
-                    >
-                      {{order.comment}}
-                    </p>
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Pastabos:</p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.comment}}</p>
                     {% endif %}
                   </div>
                 </div>
-                </div>
               </div>
             </div>
-            {% endif %} 
-          {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
         </div>
       </div>
       <div name="returned">
         <div class="d-flex" style="width: 22rem">
-          <img
-            src="{% static 'images/Bullet_green.png'  %}"
-            alt=""
-            width="17"
-            height="17"
-            style="margin-top: 0.5rem"
-          />
+          <img src="{% static 'images/Bullet_green.png'  %}" alt="" width="17" height="17" style="margin-top: 0.5rem" />
           <h4 class="ms-2">Atiduota klientui</h4>
         </div>
         <div id="tabs" style="height: 52rem; overflow-y: scroll">
-          {% for order in orders %} 
-            {% if order.status == "Atiduota klientui" %}
-            <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item p-2" style="width: 22rem">
-                <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
-                  <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
-                    <a style="text-decoration: none; color: black;" href="{% url 'order' order.id %}">{{order.code}} | {{order.client_name}}</a>
-                  </h6>
-                  <div class="d-flex">
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="modal"
-                       data-bs-target="#update_order{{order.id}}"style="cursor: pointer;">
-                      <img
-                        class="me-2 mt-0"
-                        src="{% static 'images/Edit.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                    <a class="d-flex justify-content-center pb-1" data-bs-toggle="collapse"
-                       data-bs-target="#accordion{{order.id}}"
-                       aria-expanded="false"
-                       aria-controls="accordion{{order.id}}" style="cursor: pointer;">
-                      <img
-                        class="me-1 mt-0"
-                        src="{% static 'images/Details.png' %}"
-                        alt=""
-                        height="11"
-                      />
-                    </a>
-                  </div>
-                  {% include 'order/update_order.html' %}
-                </div>
-                <h6
-                id="tabs"
-                class="text-body-secondary mb-2"
-                style="overflow-x: scroll; font-size: 13px;"
-              >
-                {{order.device_type}} {% if order.model %} - {{order.model}}
-                {%endif%}
+          {% for order in orders %} {% if order.status == "Atiduota klientui" %}
+          <div class="accordion mb-3" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item p-2" style="width: 22rem">
+              <div class="d-flex justify-content-between align-items-center mb-2" style="width: 21rem">
+                <h6 id="tabs" class="me-auto mb-0" style="width: 18rem; overflow-x: scroll; white-space: nowrap">
+                  <a style="text-decoration: none; color: black" href="{% url 'order' order.id %}"
+                    >{{order.code}} | {{order.client_name}}</a
+                  >
                 </h6>
-                <h6 class="text-body-secondary" style="font-size: 13px;">{{order.phone}}</h6>
-                <div
-                  id="accordion{{order.id}}"
-                  class="accordion-collapse collapse"
-                >
+                <div class="d-flex">
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update_order{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-2 mt-0" src="{% static 'images/Edit.png' %}" alt="" height="11" />
+                  </a>
+                  <a
+                    class="d-flex justify-content-center pb-1"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion{{order.id}}"
+                    aria-expanded="false"
+                    aria-controls="accordion{{order.id}}"
+                    style="cursor: pointer"
+                  >
+                    <img class="me-1 mt-0" src="{% static 'images/Details.png' %}" alt="" height="11" />
+                  </a>
+                </div>
+                {% include 'order/update_order.html' %}
+              </div>
+              <h6 id="tabs" class="text-body-secondary mb-2" style="overflow-x: scroll; font-size: 13px">
+                {{order.device_type}} {% if order.model %} - {{order.model}} {%endif%}
+              </h6>
+              <h6 class="text-body-secondary" style="font-size: 13px">{{order.phone}}</h6>
+              <div id="accordion{{order.id}}" class="accordion-collapse collapse">
                 <div class="accordion-body p-0" style="width: 21rem">
-                  <hr class="p-0 m-0 mb-1">
+                  <hr class="p-0 m-0 mb-1" />
                   <div name="contents">
                     {% if order.trouble %}
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Gedimas:</p>
-                    <p
-                      class="mb-1"
-                      id="tabs"
-                      style="font-size: 13px;"
-                    >
-                      {{order.trouble}}
-                    </p>
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Gedimas:</p>
+                    <p class="mb-1" id="tabs" style="font-size: 13px">{{order.trouble}}</p>
                     {% endif %} {% if order.comment %}
-                    <hr class="p-0 m-0 mb-1">
-                    <p class="mb-0" style="font-weight: 500; font-size: 13px;">Pastabos:</p>
-                    <p
-                      id="tabs"
-                      class="card-text mb-2"
-                      style="font-size: 13px;"
-                    >
-                      {{order.comment}}
-                    </p>
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-0" style="font-weight: 500; font-size: 13px">Pastabos:</p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.comment}}</p>
                     {% endif %}
-                    <hr class="p-0 m-0 mb-1">
-                    <p class="mb-1" style="font-weight: 500; font-size: 13px;">Grąžinimas:</p>
+                    <hr class="p-0 m-0 mb-1" />
+                    <p class="mb-1" style="font-weight: 500; font-size: 13px">Grąžinimas:</p>
                     <div class="d-flex align-items-center">
-                      <img src="{% static 'images/Bullet_grey.png' %}" 
-                      class="me-2"
-                      width="5"
-                      height="5"
-                      alt="">
-                      <p class="card-text" style="font-size: 13px;">Grąžinta {{order.closed_date | date:'Y-m-d'}}</p>
+                      <img src="{% static 'images/Bullet_grey.png' %}" class="me-2" width="5" height="5" alt="" />
+                      <p class="card-text" style="font-size: 13px">Grąžinta {{order.closed_date | date:'Y-m-d'}}</p>
                     </div>
                     <div class="d-flex align-items-center mb-2">
-                      <img src="{% static 'images/Bullet_grey.png' %}" 
-                      class="me-2"
-                      width="5"
-                      height="5"
-                      alt="">
-                      <p class="card-text" style="font-size: 13px;">Garantija - {{order.in_type}}, {{order.period}}mėn.</p>
+                      <img src="{% static 'images/Bullet_grey.png' %}" class="me-2" width="5" height="5" alt="" />
+                      <p class="card-text" style="font-size: 13px">
+                        Garantija - {{order.in_type}}, {{order.period}}mėn.
+                      </p>
                     </div>
-                    <p class="card-text mb-0" style="font-size: 13px;">Komentaras:</p>
+                    <p class="card-text mb-0" style="font-size: 13px">Komentaras:</p>
                     {% if order.return_comment %}
-                    <p
-                      id="tabs"
-                      class="card-text mb-2"
-                      style="font-size: 13px;"
-                    >
-                      {{order.return_comment}}
-                    </p>
+                    <p id="tabs" class="card-text mb-2" style="font-size: 13px">{{order.return_comment}}</p>
                     {% endif %}
                   </div>
-                </div>
                 </div>
               </div>
             </div>
-            {% endif %} 
-          {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
         </div>
-      </div>      
+      </div>
     </div>
     {% endblock content %}
   </body>
   {% block js %}
-    <script>
-      window.staticUrl = "{% get_static_prefix %}";
-    </script>
-    <script src="{% static 'js/custom.js' %}"></script>
+  <script>
+    window.staticUrl = "{% get_static_prefix %}";
+  </script>
+  <script src="{% static 'js/custom.js' %}"></script>
   {% endblock %}
 </html>

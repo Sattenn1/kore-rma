@@ -5,6 +5,7 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <th style="text-align: start">RMA</th>
           <th style="text-align: start">Klientas</th>
           <th style="text-align: start">Telefono numeris</th>
           <th style="text-align: start">El. Paštas</th>
@@ -17,10 +18,9 @@
       <tbody class="table-group-divider">
         {% for order in orders %}
         <tr>
+          <td>{{order.code}}</td>
           <td>
-            <a class="text-dark" href="{% url 'order' order.id %}">
-              {{order.client_name}}</a
-            >
+            <a class="text-dark" href="{% url 'order' order.id %}"> {{order.client_name}}</a>
           </td>
           <td>{{order.phone}}</td>
           <td>{{order.email}}</td>
