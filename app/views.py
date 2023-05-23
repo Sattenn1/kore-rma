@@ -86,7 +86,7 @@ def add_order(request):
             if last_code is not None:
                 order.code = last_code + 1
             else:
-                order.code = 22430
+                order.code = 22467
             order.save()
             return redirect("order", pk)
     else:
